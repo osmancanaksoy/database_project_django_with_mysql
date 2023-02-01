@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<main>
+    <!-- page-banner-area-start -->
+    <div class="page-banner-area page-banner-height" data-background="assets/img/banner/page-banner-3.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-banner-content text-center">
+                        <h4 class="breadcrumb-title">İletişim</h4>
+                        <div class="breadcrumb-two">
+                            <nav>
+                               <nav class="breadcrumb-trail breadcrumbs">
+                                  <ul class="breadcrumb-menu">
+                                     <li class="breadcrumb-trail">
+                                        <a href="{% url 'home' %}"><span>Home</span></a>
+                                     </li>
+                                     <li class="trail-item">
+                                        <span>Bize ulaşın</span>
+                                     </li>
+                                  </ul>
+                               </nav> 
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-banner-area-end -->
+
+    <!-- location-area-start -->
+    <div class="location-area pt-70 pb-25">
+        <div class="container">
+            <div class="row mb-25">
+                <div class="col-xl-12">
+                    <div class="abs-section-title text-center">
+                        <span>Şubelerimiz</span>
+                        <h4>Neredeyiz</h4>
+                        <p>Amacımız size en iyi hizmeti sunabilmektir...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for i in branch %}
+                <div class="col-xl-3 col-lg-3 col-md-6">
+                    <div class="location-item mb-30">
+                        <div class="location-image w-img mb-20">
+                            <img src="assets/img/location/location-1.jpg" alt="">
+                        </div>
+                        <h6>{{i.name}}</h6>
+                        <div class="sm-item-loc sm-item-border mb-20">
+                            <div class="sml-icon mr-20">
+                                <i class="fal fa-map-marker-alt"></i>
+                            </div>
+                            <div class="sm-content">
+                                <span>Konum</span>
+                                <p>{{i.city}}, {{i.street}}, {{i.post_code}}  </p>  
+                            </div>
+                        </div>
+                        <div class="sm-item-loc sm-item-border mb-20">
+                            <div class="sml-icon mr-20">
+                                <i class="fal fa-phone-alt"></i>
+                            </div>
+                            <div class="sm-content">
+                                <span>Bizi arayın</span>
+                                <p><a href="tel:+8804568">{{i.phone}}</a></p>  
+                            </div>
+                        </div>
+                        <div class="sm-item-loc mb-20">
+                            <div class="sml-icon mr-20">
+                                <i class="fal fa-envelope"></i>
+                            </div>
+                            <div class="sm-content">
+                                <span>Mail</span>
+                                <p><a href="https://themepure.net/cdn-cgi/l/email-protection#a2d1d6cdd0c7e2c1cdcfd2c3ccdb8cc1cdcf"><span class="__cf_email__" data-cfemail="3744435845527754585a4756594e1954585a">[email&#160;protected]</span></a></p>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- location-area-end -->
+
+    <!-- cmamps-area-start -->
+    <div class="cmamps-area">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12045.04113475047!2d39.7710675!3d40.9976759!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x7abdf48cd6c81000!2sKaradeniz%20Teknik%20%C3%9Cniversitesi!5e0!3m2!1str!2str!4v1671329098111!5m2!1str!2str" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <!-- cmamps-area-end -->
+</main>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- page-banner-area-start -->
+<div class="page-banner-area page-banner-height-2" data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="page-banner-content text-center">
+                    <h4 class="breadcrumb-title">Hesabım</h4>
+                    <div class="breadcrumb-two">
+                        <nav>
+                            <nav class="breadcrumb-trail breadcrumbs">
+                                <ul class="breadcrumb-menu">
+                                    <li class="breadcrumb-trail">
+                                        <a href="{% url 'home' %}"><span>Home</span></a>
+                                    </li>
+                                    <li class="trail-item">
+                                        <span>Hesabım</span>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- page-banner-area-end -->
+<!-- account-area-start -->
+<div class="account-area mt-70 mb-70">
+    <div class="container">        
+        <div class="col-10">
+            <h3 lass="display-4 mb-4">Profilinizi Güncelleyin</h3>
+            <a href="{% url 'logout_user' %}" class="tp-in-btn w-125">Adres Ekle</a>
+            <a href="{% url 'logout_user' %}" class="tp-in-btn w-125">Adreslerim</a>
+            <a href="{% url 'logout_user' %}" class="tp-in-btn w-125">Kartlarım</a>
+            <a href="{% url 'logout_user' %}" class="tp-in-btn w-125">Siparişlerim</a>
+            <a href="{% url 'reviews' %}" class="tp-in-btn w-125">İncelemelerim</a>
+        </div>
+        <form action="{% url 'profile_update' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <hr>
+                {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                {% endfor %}                            
+            {% endif %}
+                <div class="col-lg-6">
+                    <div class="basic-login mb-50">                     
+                            <label for="name">İsim <span>*</span></label>
+                            <input id="name" type="text" placeholder="İsim" name="first_name" value="{{profile.user.first_name}}">
+                            <label for="username">Kullanıcı Adı <span>*</span></label>
+                            <input id="username" type="text" placeholder="Kullanıcı Adı" name="username" value="{{profile.user.username}}">
+                            <label for="userpass">Şifre <span>*</span></label>
+                            <input id="userpass" type="password" placeholder="Şifre değişimi için sadece burayı doldurun." name="password">
+                            <div class="row">
+                                <div class="col-5">
+                                    <button type="submit" class="tp-in-btn w-100">Profili Güncelle</button>
+                                </div>
+                                <div class="col-3">
+                                    <a href="{% url 'logout_user' %}" class="btn btn-danger w-100 h-100 rounded">Çıkış Yap</a>
+                                </div>
+                                <div class="col-3">
+                                    <a href="{% url 'delete_user' %}" class="btn btn-danger w-100 h-100 rounded">Hesabı Sil</a>
+                                </div>
+                            </div>                    
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="basic-login mb-50">
+                            <label for="lastname">Soyad <span>*</span></label>
+                            <input id="lastname" type="text" placeholder="Soy İsim" name="last_name" value="{{profile.user.last_name}}">
+                            <label for="email-id">Email <span>*</span></label>
+                            <input id="email-id" type="text" placeholder="Email" name="email" value="{{profile.user.email}}">
+                            <label for="email-id">Telefon <span>*</span></label>
+                            <input id="phone-id" type="text" placeholder="Telefon" name="phone" value="{{profile.phone}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- account-area-end -->
+{% endblock %}

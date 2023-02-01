@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load product_tags %}
+{% block content %}
+{% block script %}
+<script>
+	$(document).on('click',".add-wishlist",function(){
+		var _pid=$(this).attr('data-product');
+		var _vm=$(this);
+		// Ajax
+		$.ajax({
+			url:"/add-wishlist",
+			data:{
+				product:_pid
+			},
+			dataType:'json',
+			success:function(res){
+				if(res.bool==true){
+					_vm.addClass('disabled').removeClass('add-wishlist');
+				}
+			}
+		});
+		// EndAjax
+	});
+</script>
+<style>
+    input[type=range]{
+    -webkit-appearance: none;
+    width:100%;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+    width: 1000px;
+    height: 5px;
+    background: #FCBE00;
+    border: none;
+    border-radius: 3px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: goldenrod;
+    margin-top: -5px;
+    }
+    input[type=range]:focus {
+    outline: none;
+    }
+    input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #FCBE00;
+    }
+ </style>
+{% endblock %}
+        <!-- breadcrumb__area-start -->
+        <section class="breadcrumb__area box-plr-75">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xxl-12">
+                        <div class="breadcrumb__wrapper">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                  <li class="breadcrumb-item"><a href="{% url 'home' %}">Anasayfa</a></li>
+                                  <li class="breadcrumb-item active" aria-current="page">Mağaza</li>
+                                </ol>
+                              </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- breadcrumb__area-end -->
+
+        <!-- product-details-start -->
+        <div class="product-details">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="product__details-nav d-sm-flex align-items-start">
+                            <ul class="nav nav-tabs flex-sm-column justify-content-between" id="productThumbTab" role="tablist">
+                                {% for i in product.product_image_set.all %}
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link" id="thumb{{i.id}}-tab" data-bs-toggle="tab" data-bs-target="#thumb{{i.id}}" type="button" role="tab" aria-controls="thumb{{i.id}}" aria-selected="true">
+                                      <img src="{{i.image_url}}" alt="" style="width:85px;height:85px;">
+                                  </button>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="product__details-thumb">
+                                <div class="tab-content" id="productThumbContent">
+                                    <div class="tab-pane fade show active" id="thumb" role="tabpanel" aria-labelledby="thumb-tab">
+                                        <div class="product__details-nav-thumb w-img">
+                                            <img src="{{product.product_image_set.first.image_url}}" alt="">
+                                        </div>
+                                    </div>
+                                    {% for i in product.product_image_set.all %}
+                                    <div class="tab-pane fade show" id="thumb{{i.id}}" role="tabpanel" aria-labelledby="thumb{{i.id}}-tab">
+                                        <div class="product__details-nav-thumb w-img">
+                                            <img src="{{i.image_url}}" alt="">
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="product__details-content">
+                            <h6>{{product.name}}</h6>
+                            <div class="price mb-10">
+                                <span>{% call_sellprice product.price product.discount %}₺</span>&nbsp;&nbsp;<del>{{product.price}}</del>
+                            </div>
+                            <div class="features-des mb-20 mt-10">
+                                <ul>
+                                    <li><a href="product-details.html"><i class="fas fa-circle"></i> {{product.information}}</a></li>
+                                </ul>
+                            </div>
+                            <div class="product-stock mb-20">
+                                <span class="mr-10">Stok Durumu :</span>
+                                <span>{{product.stock}} tane stokta</span>
+                            </div>
+                            <div class="cart-option mb-15">
+                                <div class="product-quantity mr-20">
+                                    <div class="cart-plus-minus p-relative"><input type="number" value="1" id="productQty"><div class="dec qtybutton">-</div><div class="inc qtybutton">+</div></div>
+                                </div>
+                                <button class="cart-btn" id="addToCartBtn">Sepete Ekle</buttton>
+                            </div>
+                            <div class="details-meta">
+                                <div class="d-meta-left">
+                                    <div class="dm-item mr-20">
+                                        <button class ="btn btn-sm btn-danger add-wishlist" data-product="{{product.id}}"><i class="fal fa-heart"></i> İstek Listesine Ekle</button>
+                                    </div>
+                                </div>
+                                <div class="d-meta-left">
+                                    <div class="dm-item">
+                                        <a href="#"><i class="fal fa-share-alt"></i>Paylaş</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-tag-area mt-15">
+                                <div class="product_info">
+                                    <span class="posted_in">
+                                        <span class="cat mr-10">Kategori:</span>
+                                        <span>{{product.sub_category.category.main_category.name}} ,{{product.sub_category.category.name}}, {{product.sub_category.name}}</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- product-details-end -->
+
+        <!-- product-details-des-start -->
+        <div class="product-details-des mt-40 mb-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="product__details-des-tab">
+                            <ul class="nav nav-tabs" id="productDesTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link active" id="des-tab" data-bs-toggle="tab" data-bs-target="#des" type="button" role="tab" aria-controls="des" aria-selected="true">Description </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="aditional-tab" data-bs-toggle="tab" data-bs-target="#aditional" type="button" role="tab" aria-controls="aditional" aria-selected="false">Additional information</button>
+                                  </li>
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="false">Reviews (1) </button>
+                                </li>
+                              </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="prodductDesTaContent">
+                    <div class="tab-pane fade active show" id="des" role="tabpanel" aria-labelledby="des-tab">
+                        <div class="product__details-des-wrapper">                            
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="aditional" role="tabpanel" aria-labelledby="aditional-tab">
+                        <div class="product__desc-info">
+                            <ul>
+                               <li>
+                                  <h6>Weight</h6>
+                                  <span>2 lbs</span>
+                               </li>
+                            </ul>
+                         </div>
+                    </div>
+                    <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                        <div class="product__details-review">
+                            <div class="row">
+                                <div class="col-xl-8">
+                                    <div class="review-des-infod">
+                                        {% for i in review %}
+                                        <h6><span>{{ i.product.name }}</span> inceleme</h6>
+                                        <div class="review-details-des">
+                                            <div class="review-details-content">
+                                                <div class="name-date mb-30">
+                                                    <h6> {{i.user.first_name}} {{i.user.last_name}} – <span> {{i.user.username}} </span></h6>
+                                                </div>
+                                                <div class="name-date mb-30">
+                                                    <h6> Değerlendirme Puanı: <span> {{i.review_rating}} / 5 </span></h6>
+                                                </div>
+                                                <p>{{i.review_text}}</p>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="product__details-comment ">
+                                        <div class="comment-title mb-20">
+                                           <h3>İnceleme Ekle</h3>
+                                        </div>
+                                        <div class="comment-input-box">
+                                           <form action="{% url 'add_review' %}" method="GET">
+                                            <input type = "hidden" name="prod_id" id="prod_id" value={{product.id}}>
+                                              <div class="row">
+                                                <div class="col-xxl-6 col-xl-6">
+                                                 <div class="col-xxl-12">
+                                                       <textarea placeholder="İncelemeniz" class="comment-input comment-textarea" name="comment"></textarea>
+                                                 </div>
+                                                 <select name="select" id="select">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                                 <div class="col-xxl-12">
+                                                    <div class="comment-submit">
+                                                       <button type="submit" class="cart-btn">Gönder</button>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </form>
+                                        </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- product-details-des-end -->
+{% endblock %}

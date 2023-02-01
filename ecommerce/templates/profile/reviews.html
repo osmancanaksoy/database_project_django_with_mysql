@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main>
+    <!-- page-banner-area-start -->
+    <div class="page-banner-area page-banner-height-2" data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-banner-content text-center">
+                        <h4 class="breadcrumb-title">İncelemelerim</h4>
+                        <div class="breadcrumb-two">
+                            <nav>
+                               <nav class="breadcrumb-trail breadcrumbs">
+                                  <ul class="breadcrumb-menu">
+                                     <li class="breadcrumb-trail">
+                                        <a href="{% url 'home' %}"><span>Ana Sayfa</span></a>
+                                     </li>
+                                     <li class="trail-item">
+                                        <span>İnceleme Listesi</span>
+                                     </li>
+                                  </ul>
+                               </nav> 
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-banner-area-end -->
+
+    <!-- cart-area-start -->
+    <section class="cart-area pb-120 pt-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form action="{% url 'reviews' %}" method="post">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">Ürün Adı</th>
+                                        <th class="cart-product-name">İnceleme Yazısı</th>
+                                        <th class="product-price">İnceleme Puanı</th>
+                                        <th class="product-price">İnceleme Resmi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in review %}
+                                    <tr> 
+                                        {% csrf_token %} 
+                                        <input id="product-name" type="hidden" name="product_name" value="{{i.product.id}}">                                      
+                                        <td class="product-name">{{i.product.name}}</td>
+                                        <td class="review-text">
+                                            <input id="review-text" type="text" name="review-text" value="{{i.review_text}}">
+                                        </td>
+                                        <td class="review-rating">
+                                            <input id="review-rating" type="text" name="review-rating" value="{{i.review_rating}}">
+                                        </td>
+                                        <td class="review-photo"><img src="{{i.review_photo.image}}" alt=""></td>
+                                        <td class="product-quantity">
+                                            <button type="submit" name="b1" value="8" class="tp-in-btn w-100">Düzenle</button>
+                                            <button type="submit" class="btn btn-danger w-100 h-100 rounded">Sil</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+     <!-- cart-area-end -->
+</main>
+  <script>
+    $(document).ready(function () {
+      $("#delete_btn").click(function () {
+        if (confirm("Silmek istediğinize emin misiniz ?")) {
+          var id = [];
+          var csrf = $("input[name=csrfmiddlewaretoken]").val();
+          $(":checkbox:checked").each(function (i) {
+            id[i] = $(this).val();
+          });
+          if (id.length === 0) {
+            alert("Lütfen silmek istediğiniz kaydı seçin !");
+          } else {
+            console.log(id);
+            $.ajax({
+              url: "show",
+              method: "POST",
+              data: {
+                id,
+                csrfmiddlewaretoken: csrf,
+              },
+              success: function (response) {
+                for (var i = 0; i < id.length; i++) {
+                  $("tr#" + id[i] + "").css("backround-color"),
+                    $("tr#" + id[i] + "").fadeOut("slow");
+                }
+              },
+            });
+          }
+        }
+      });
+    });
+  </script>
+{% endblock %}
